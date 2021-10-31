@@ -6,3 +6,11 @@ Com o npm instalado executar o comando `npm install` na pasta Server para instal
 
 ## Executando o Servidor 
 executar o comando `npm start` na pasta Server para subir um servidor local onde o socket principal do jogo poderá ser assesado na url `ws://localhost:3000`
+
+## Bibliotecas utilizadas
+Para os sockets
+https://github.com/websockets/ws/blob/HEAD/doc/ws.md
+
+Utilidades gerais
+https://ramdajs.com/
+
