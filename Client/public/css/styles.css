@@ -107,3 +107,8 @@ section {
   display: none;
   opacity: 0;
 }
+
+#waitingPlayers {
+  display: none;
+  opacity: 0;
+}

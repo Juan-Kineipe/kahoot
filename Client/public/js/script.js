@@ -17,8 +17,6 @@ ws.onmessage = message => {
       const playerStatus =  player.status === "ready"? " está pronto" : " não está pronto"
       completeList.innerHTML += "<li>" + player.name + playerStatus +  "</li>"
     });
-
-    console.log(response)
   }
 
   if (response.type === 'QUESTION_UPDATE'){
@@ -53,4 +51,10 @@ readyButton.onclick = function () {
   }
 
   ws.send(JSON.stringify(payLoad))
+
+  startAnimation.to(waiting, 1, { alpha: 0 });
+  startAnimation.to(waiting, 0.1, {css: { display: "none" }});
+
+  startAnimation.to(waitingPlayers, 0.1, {css: { display: "grid" }});
+  startAnimation.to(waitingPlayers, 1, { alpha: 1 });
 };
