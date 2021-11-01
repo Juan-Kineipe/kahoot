@@ -9,7 +9,16 @@ ws.onmessage = message => {
 
   if (response.type === 'LOBBY_UPDATE'){
     console.log('Atualizar lista de jogadores')
-    
+    var completeList = document.getElementById("list")
+    var playersList = response.message
+
+    completeList.innerHTML = ''
+    playersList.forEach(player => {
+      const playerStatus =  player.status === "ready"? " está pronto" : " não está pronto"
+      completeList.innerHTML += "<li>" + player.name + playerStatus +  "</li>"
+    });
+
+    console.log(response)
   }
 
   if (response.type === 'QUESTION_UPDATE'){
