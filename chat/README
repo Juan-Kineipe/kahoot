@@ -1,0 +1,5 @@
+Para rodar basta abrir o cmd e digitar: 'node server.js'
+abrir o navegador e digitar: 'localhost:3000' //porta descrito no código
+quando um cliente se conectar aparecerá socket conectado com uma chave
+Comentei todo o código para esclarecimento de alguns pontos chave
+
