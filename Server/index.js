@@ -57,9 +57,9 @@ server.on('connection', (socket) => {
     ) {
       player.status = message.status
       broadcastUpdate('LOBBY_UPDATE', getAllPlayersLobbyData(players))
-      console.log('player conectado DEBUG')
+      console.log(`player ${player.name} conectado`)
       if (canProceedToQuestionsState(players)) {
-        console.log('jogo começou DEBUG')
+        console.log('jogo começou')
         gameState.state = 'questions'
         currentQuestionNumber = 1
         sendNextQuestion()
