@@ -16,15 +16,19 @@ startButton.onclick = function () {
 
     ws.send(JSON.stringify(payLoad))
 
-    startAnimation.to([title, card], 1, { alpha: 0 });
-    startAnimation.to([title, card], 0.1, {css: { display: "none" }});
+    startAnimation.to(card, 1, { alpha: 0 });
+    startAnimation.to(card, 0.1, {css: { display: "none" }});
+
+    startAnimation.to(waiting, 0.1, {css: { display: "grid" }});
+    startAnimation.to(waiting, 1, { alpha: 1 });
+
 
     ws.onmessage = message => {
     const response = JSON.parse(message.data)
 
     if (response.type === 'LOBBY_UPDATE'){
-      console.log(response)
       console.log('Atualizar lista de jogadores')
+      
     }
 
     if (response.type === 'QUESTION_UPDATE'){
