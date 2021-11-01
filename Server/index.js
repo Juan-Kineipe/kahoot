@@ -47,6 +47,7 @@ server.on('connection', (socket) => {
       && !R.isNil(message.name)
     ) {
       player.name = message.name
+      console.log(`player ${player.name} conectado`)
       broadcastUpdate('LOBBY_UPDATE', getAllPlayersLobbyData(players))
     }
 
@@ -56,8 +57,8 @@ server.on('connection', (socket) => {
       && !R.isNil(player.name)
     ) {
       player.status = message.status
+      console.log(`player ${player.name} está pronto`)
       broadcastUpdate('LOBBY_UPDATE', getAllPlayersLobbyData(players))
-      console.log(`player ${player.name} conectado`)
       if (canProceedToQuestionsState(players)) {
         console.log('jogo começou')
         gameState.state = 'questions'
