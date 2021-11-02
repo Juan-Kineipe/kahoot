@@ -47,8 +47,7 @@ ws.onmessage = message => {
       completeList.innerHTML += "<li>" + player.name + " fez " + player.score + " pontos </li>"
     });
 
-    startAnimation.to(ranking, 0.1, {css: { display: "grid" }});
-    startAnimation.to(ranking, 1, { alpha: 1 });
+    showRanking()
 
     console.log('Jogo terminou')
   }
@@ -68,6 +67,13 @@ startButton.onclick = function () {
     alert("Digite um nome!")
   }
 };
+
+restartButton.onclick = function () {
+  hideRanking()
+  hideWaitingQuestion()
+  startQuizAnimation()
+  showReadyList()
+}
 
 readyButton.onclick = function () {
   const payLoad = {
@@ -161,6 +167,29 @@ showQuestion = () => {
 
   startAnimation.to(question, 0.1, {css: { display: "grid" }});
   startAnimation.to(question, 1, { alpha: 1 });
+}
+
+showReadyList = () => {
+  startAnimation.to(readyList, 0.1, {css: { display: "grid" }});
+  startAnimation.to(readyList, 1, { alpha: 1 });
+
+  var completeList = document.getElementById("readyList")
+  completeList.innerHTML = ''
+}
+
+showWaitingPlayers = () => {
+  startAnimation.to(waitingPlayers, 0.1, {css: { display: "grid" }});
+  startAnimation.to(waitingPlayers, 1, { alpha: 1 });
+}
+
+showRanking = () => {
+  startAnimation.to(ranking, 0.1, {css: { display: "grid" }});
+  startAnimation.to(ranking, 1, { alpha: 1 });
+}
+
+hideRanking = () => {
+  startAnimation.to(ranking, 1, { alpha: 0 });
+  startAnimation.to(ranking, 0.1, {css: { display: "none" }});
 }
 
 startQuizAnimation = () => {
