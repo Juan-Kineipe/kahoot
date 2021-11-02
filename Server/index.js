@@ -7,6 +7,7 @@ const server = new ws.Server({
 })
 
 MIN_PLAYERS_TO_START_GAME = 3
+TIME_TO_ANSWER_QUESTION = 30000
 let currentQuestionNumber = 1
 let players = []
 
@@ -15,10 +16,30 @@ const getAllPlayersLobbyData = (players) => {
   return R.project(['name', 'status'], playersWithName)
 }
 
-const sendNextQuestion = () => {
-  const question = R.omit(['correctResponse'], questions[currentQuestionNumber])
-  broadcastUpdate('QUESTION_UPDATE', question)
+const getAllPlayersScoreData = (players) => {
+  const playersWithName = R.reject(R.propSatisfies(name => R.isNil(name), 'name'), players)
+  return R.project(['name', 'score'], playersWithName)
+}
+
+const sendNextQuestion = async () => {
   currentQuestionNumber++
+
+  const statusLens = R.lensProp('status')
+  const scoreLens = R.lensProp('score')
+
+  if (R.isNil(questions[currentQuestionNumber])) {
+    broadcastUpdate('GAME_RESULT', getAllPlayersScoreData(players))
+    players = R.map(R.set(statusLens, 'connected'), players)
+    players = R.map(R.set(scoreLens, 0), players)
+    gameState.state = 'lobby'
+    return
+  }
+
+  const question = R.omit(['correctResponse'], questions[currentQuestionNumber])
+  players = R.map(R.set(statusLens, 'responding'), players)
+  broadcastUpdate('QUESTION_UPDATE', question)
+
+  await setTimeout(sendNextQuestion, TIME_TO_ANSWER_QUESTION);
 }
 
 const canProceedToQuestionsState = (players) => {
@@ -34,7 +55,8 @@ const gameState = {
 server.on('connection', (socket) => {
   const id = uuidv4()
   const status = 'connected'
-  const playerMetadata = { id, status, socket }
+  const score = 0
+  const playerMetadata = { id, status, socket, score }
 
   players = R.append(playerMetadata, players)
 
@@ -62,9 +84,21 @@ server.on('connection', (socket) => {
       if (canProceedToQuestionsState(players)) {
         console.log('jogo começou')
         gameState.state = 'questions'
-        currentQuestionNumber = 1
+        currentQuestionNumber = 0
         sendNextQuestion()
       }
+    }
+
+    if (
+      gameState.state === 'questions'
+      && player.status === 'responding'
+      && !R.isNil(message.questionResponse)
+    ) {
+      const correctResponse = questions[currentQuestionNumber].correctResponse
+      if (correctResponse === message.questionResponse) {
+          player.score = ++player.score
+        }
+      player.status = 'responded'
     }
   })
 
