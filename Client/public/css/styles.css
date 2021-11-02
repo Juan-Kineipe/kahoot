@@ -112,3 +112,13 @@ section {
   display: none;
   opacity: 0;
 }
+
+#question {
+  display: none;
+  opacity: 0;
+}
+
+#waitingQuestion {
+  display: none;
+  opacity: 0;
+}

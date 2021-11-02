@@ -85,7 +85,7 @@ server.on('connection', (socket) => {
         console.log('jogo começou')
         gameState.state = 'questions'
         currentQuestionNumber = 0
-        sendNextQuestion()
+        setTimeout(sendNextQuestion, 3000)
       }
     }
 
@@ -96,6 +96,7 @@ server.on('connection', (socket) => {
     ) {
       const correctResponse = questions[currentQuestionNumber].correctResponse
       if (correctResponse === message.questionResponse) {
+          console.log(`player ${player.name} acertou`)
           player.score = ++player.score
         }
       player.status = 'responded'
