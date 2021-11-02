@@ -14,7 +14,6 @@ ws.onmessage = message => {
   console.log(response)
 
   if (response.type === 'LOBBY_UPDATE'){
-    console.log('Atualizar lista de jogadores')
     var completeList = document.getElementById("readyList")
     var playersList = response.message
 
@@ -26,8 +25,6 @@ ws.onmessage = message => {
   }
 
   if (response.type === 'QUESTION_UPDATE'){
-    console.log('mostra pergunta')
-
     hideWaitingQuestion()
 
     showQuestion()
@@ -37,22 +34,35 @@ ws.onmessage = message => {
     handleQuestion(response)
 
   }
+
+  if (response.type === 'GAME_RESULT'){
+    hideResponse()
+    hideWaitingQuestion()
+
+    var completeList = document.getElementById("rankingList")
+    var playersList = response.message
+
+    completeList.innerHTML = ''
+    playersList.forEach(player => {
+      completeList.innerHTML += "<li>" + player.name + " fez " + player.score + " pontos </li>"
+    });
+
+    startAnimation.to(ranking, 0.1, {css: { display: "grid" }});
+    startAnimation.to(ranking, 1, { alpha: 1 });
+
+    console.log('Jogo terminou')
+  }
 }
 
 startButton.onclick = function () {
   if (nameInput.value !== '') {
-    console.log("Conecta com server e começa o jogo");
     const payLoad = {
       name: nameInput.value
     }
 
     ws.send(JSON.stringify(payLoad))
 
-    startAnimation.to(card, 1, { alpha: 0 });
-    startAnimation.to(card, 0.1, {css: { display: "none" }});
-
-    startAnimation.to(waiting, 0.1, {css: { display: "grid" }});
-    startAnimation.to(waiting, 1, { alpha: 1 });
+    startQuizAnimation()
 
   } else {
     alert("Digite um nome!")
@@ -66,11 +76,7 @@ readyButton.onclick = function () {
 
   ws.send(JSON.stringify(payLoad))
 
-  startAnimation.to(waiting, 1, { alpha: 0 });
-  startAnimation.to(waiting, 0.1, {css: { display: "none" }});
-
-  startAnimation.to(waitingPlayers, 0.1, {css: { display: "grid" }});
-  startAnimation.to(waitingPlayers, 1, { alpha: 1 });
+  readyAnimation()
 };
 
 aButton.onclick = function () {
@@ -129,9 +135,13 @@ handleQuestion = (response) => {
   dAnswer.innerHTML += response.message.responses.d
 }
 
-handleResponse = () => {
+hideResponse = () => {
   startAnimation.to(question, 1, { alpha: 0 });
   startAnimation.to(question, 0.1, {css: { display: "none" }});
+}
+
+handleResponse = () => {
+  hideResponse()
 
   startAnimation.to(waitingQuestion, 0.1, {css: { display: "grid" }});
   startAnimation.to(waitingQuestion, 1, { alpha: 1 });
@@ -151,4 +161,20 @@ showQuestion = () => {
 
   startAnimation.to(question, 0.1, {css: { display: "grid" }});
   startAnimation.to(question, 1, { alpha: 1 });
+}
+
+startQuizAnimation = () => {
+  startAnimation.to(card, 1, { alpha: 0 });
+  startAnimation.to(card, 0.1, {css: { display: "none" }});
+
+  startAnimation.to(waiting, 0.1, {css: { display: "grid" }});
+  startAnimation.to(waiting, 1, { alpha: 1 });
+}
+
+readyAnimation = () => {
+  startAnimation.to(waiting, 1, { alpha: 0 });
+  startAnimation.to(waiting, 0.1, {css: { display: "none" }});
+
+  startAnimation.to(waitingPlayers, 0.1, {css: { display: "grid" }});
+  startAnimation.to(waitingPlayers, 1, { alpha: 1 });
 }
