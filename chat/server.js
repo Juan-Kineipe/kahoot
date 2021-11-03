@@ -28,3 +28,7 @@ io.on('connection', socket => {//toda vez que um novo cliente conectar ao socket
 });
 
 server.listen(3000);
+
+// código desenvolvido com o auxílio dos seguintes vídeos: 
+//https://www.youtube.com/watch?v=-jXfKDYJJvo
+//https://www.youtube.com/watch?v=bQ7NNSyGV2U&t=517s
