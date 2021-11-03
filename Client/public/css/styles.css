@@ -98,6 +98,36 @@ section {
   opacity: 0.4;
 }
 
+.timer {
+  color: #fff;
+  margin: 50px;
+}
+
+.readylist {
+  margin: 50px;
+}
+
+.readylist li {
+  font-size: 1.4rem;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.question {
+  text-align: center;
+}
+
+.question h1 {
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.question button {
+  margin: 10px 0;
+  justify-self: center;
+}
+
 #gameHeader {
   display: none;
   padding: 0 20px;

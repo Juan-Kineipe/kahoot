@@ -25,6 +25,9 @@ ws.onmessage = message => {
   }
 
   if (response.type === 'QUESTION_UPDATE'){
+
+    setTimer()
+
     hideWaitingQuestion()
 
     showQuestion()
@@ -206,4 +209,29 @@ readyAnimation = () => {
 
   startAnimation.to(waitingPlayers, 0.1, {css: { display: "grid" }});
   startAnimation.to(waitingPlayers, 1, { alpha: 1 });
+}
+
+// timer
+
+var counter = 30;
+var timer = document.querySelector('#timer');
+
+setTimer = () => {
+  counter = 30;
+  formatTimer();
+  let intervalId = setInterval(() => {
+    counter -= 1;
+    formatTimer();
+    if(counter === 0) {
+      clearInterval(intervalId)
+    }
+  }, 1000)
+}
+
+formatTimer = () => {
+  var hours = Math.floor(counter / 3600);
+  var minutes = Math.floor((counter - (hours * 3600)) / 60);
+  var seconds = counter - (hours * 3600) - (minutes * 60);
+
+  timer.innerHTML = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
 }
